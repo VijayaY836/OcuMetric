@@ -39,7 +39,7 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({ children
     // Reset previous data
     setAssessmentData(null);
     setResults(null);
-    setCurrentScreen('assessment');
+    setCurrentScreen('calibration');
   };
 
   const completeAssessment = (data: AssessmentData) => {

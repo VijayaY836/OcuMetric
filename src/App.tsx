@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppContextProvider, useAppContext } from './context/AppContext';
 import { LandingScreen } from './components/LandingScreen';
+import { CalibrationScreen } from './components/CalibrationScreen';
 import { AssessmentScreen } from './components/AssessmentScreen';
 import { ResultsScreen } from './components/ResultsScreen';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -12,6 +13,7 @@ const AppContent: React.FC = () => {
     cameraPreviewVisible,
     assessmentData,
     results,
+    setCurrentScreen,
     setDyslexicMode,
     setCameraPreviewVisible,
     startAssessment,
@@ -26,6 +28,12 @@ const AppContent: React.FC = () => {
           dyslexicMode={dyslexicMode}
           onDyslexicModeChange={setDyslexicMode}
           onStartAssessment={startAssessment}
+        />
+      )}
+
+      {currentScreen === 'calibration' && (
+        <CalibrationScreen
+          onCalibrationComplete={() => setCurrentScreen('assessment')}
         />
       )}
 

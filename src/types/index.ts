@@ -7,7 +7,7 @@
  * Main application state managed by AppContext
  */
 export interface AppState {
-  currentScreen: 'landing' | 'assessment' | 'results';
+  currentScreen: 'landing' | 'calibration' | 'assessment' | 'results';
   dyslexicMode: boolean;
   cameraPreviewVisible: boolean;
   assessmentData: AssessmentData | null;

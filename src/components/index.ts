@@ -13,6 +13,7 @@ export { StressScoreGauge } from './StressScoreGauge';
 export { BehavioralInsights } from './BehavioralInsights';
 export { SuggestionsList } from './SuggestionsList';
 export { LandingScreen } from './LandingScreen';
+export { CalibrationScreen } from './CalibrationScreen';
 export { AssessmentScreen } from './AssessmentScreen';
 export { ResultsScreen } from './ResultsScreen';
 export { ErrorBoundary } from './ErrorBoundary';
