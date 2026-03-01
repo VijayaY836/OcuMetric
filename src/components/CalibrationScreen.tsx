@@ -12,8 +12,44 @@ interface CalibrationScreenProps {
 export const CalibrationScreen: React.FC<CalibrationScreenProps> = ({ onCalibrationComplete }) => {
   const [countdown, setCountdown] = useState(5);
   const [cameraReady, setCameraReady] = useState(false);
+  const [permissionGranted, setPermissionGranted] = useState(false);
   const [cameraError, setCameraError] = useState<CameraErrorType | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Request camera permission on mount
+  useEffect(() => {
+    const requestCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: 640, 
+            height: 480 
+          } 
+        });
+        
+        // Permission granted, now we can initialize EyeTracker
+        setPermissionGranted(true);
+        
+        // Stop the stream immediately - EyeTracker will create its own
+        stream.getTracks().forEach(track => track.stop());
+      } catch (error) {
+        console.error('Camera permission error:', error);
+        if (error instanceof Error) {
+          if (error.name === 'NotAllowedError') {
+            setCameraError('permission-denied');
+          } else if (error.name === 'NotFoundError') {
+            setCameraError('no-camera');
+          } else if (error.name === 'NotReadableError') {
+            setCameraError('camera-in-use');
+          } else {
+            setCameraError('permission-denied');
+          }
+        }
+      }
+    };
+
+    requestCamera();
+  }, []);
 
   useEffect(() => {
     if (!cameraReady) return;
@@ -59,13 +95,15 @@ export const CalibrationScreen: React.FC<CalibrationScreenProps> = ({ onCalibrat
         <PrivacyBadge />
       </div>
 
-      {/* Hidden Eye Tracker for camera initialization */}
-      <EyeTracker
-        onMetricsUpdate={handleMetricsUpdate}
-        isActive={true}
-        videoRef={videoRef}
-        onError={handleCameraError}
-      />
+      {/* Hidden Eye Tracker - only render after permission granted */}
+      {permissionGranted && (
+        <EyeTracker
+          onMetricsUpdate={handleMetricsUpdate}
+          isActive={true}
+          videoRef={videoRef}
+          onError={handleCameraError}
+        />
+      )}
 
       {/* Camera Error Handler */}
       <CameraErrorHandler
@@ -84,10 +122,10 @@ export const CalibrationScreen: React.FC<CalibrationScreenProps> = ({ onCalibrat
                   <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                  Initializing Camera...
+                  {!permissionGranted ? 'Requesting Camera Access...' : 'Initializing Camera...'}
                 </h2>
                 <p className="text-lg text-gray-700">
-                  Please allow camera access to continue
+                  {!permissionGranted ? 'Please allow camera access in the browser prompt' : 'Setting up eye tracking...'}
                 </p>
               </>
             ) : (
