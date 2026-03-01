@@ -43,6 +43,7 @@ const AppContent: React.FC = () => {
           cameraPreviewVisible={cameraPreviewVisible}
           onCameraPreviewChange={setCameraPreviewVisible}
           onAssessmentComplete={completeAssessment}
+          onBack={resetAssessment}
         />
       )}
 
