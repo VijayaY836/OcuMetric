@@ -41,6 +41,9 @@ export const LandingScreen: React.FC<LandingScreenProps> = ({
               This research prototype measures ocular stress indicators during a progressive reading task. 
               The text will gradually decrease in size over 30 seconds while we track your eye behavior.
             </p>
+            <p className="text-sm font-medium text-blue-700 bg-blue-50 p-4 rounded-lg border border-blue-200">
+              OcuMetric first calibrates baseline blink rate and viewing distance using local, real-time facial landmark detection. No data is stored. Everything runs on-device.
+            </p>
             <p className="text-sm text-gray-600">
               All processing occurs locally in your browser. No video data is stored or transmitted.
             </p>
